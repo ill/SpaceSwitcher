@@ -1,23 +1,14 @@
-﻿import sys
-import maya.OpenMayaMPx as OpenMayaMPx
+﻿import maya.OpenMayaMPx as OpenMayaMPx
 import SpaceSwitcherNode
+
+'''
+This is where we register and deregister everything in our plugin
+'''
 
 def initializePlugin(mobject):
     mplugin = OpenMayaMPx.MFnPlugin(mobject)
-    try:
-        mplugin.registerNode(SpaceSwitcherNode.SpaceSwitcherNode.kNodeName, SpaceSwitcherNode.SpaceSwitcherNode.kNodeId,
-                             SpaceSwitcherNode.SpaceSwitcherNode.nodeCreator,
-                             SpaceSwitcherNode.SpaceSwitcherNode.nodeInitializer,
-                             OpenMayaMPx.MPxNode.kDependNode,
-                             SpaceSwitcherNode.SpaceSwitcherNode.kNodeClassify)
-    except:
-        sys.stderr.write("Failed to register node: " + SpaceSwitcherNode.SpaceSwitcherNode.kNodeName)
-        raise
+    SpaceSwitcherNode.SpaceSwitcherNode.registerNode(mplugin)
 
 def uninitializePlugin(mobject):
     mplugin = OpenMayaMPx.MFnPlugin(mobject)
-    try:
-        mplugin.deregisterNode(SpaceSwitcherNode.SpaceSwitcherNode.kNodeId)
-    except:
-        sys.stderr.write("Failed to unregister node: " + SpaceSwitcherNode.SpaceSwitcherNode.kNodeName)
-        raise
+    SpaceSwitcherNode.SpaceSwitcherNode.deregisterNode(mplugin)

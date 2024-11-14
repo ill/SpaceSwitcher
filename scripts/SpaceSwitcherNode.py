@@ -1,4 +1,5 @@
-﻿import maya.OpenMaya as OpenMaya
+﻿import sys
+import maya.OpenMaya as OpenMaya
 import maya.OpenMayaMPx as OpenMayaMPx
 
 class SpaceSwitcherNode(OpenMayaMPx.MPxNode):
@@ -18,6 +19,27 @@ class SpaceSwitcherNode(OpenMayaMPx.MPxNode):
     @staticmethod
     def nodeInitializer():
         pass
+
+    @staticmethod
+    def registerNode(mplugin):
+        try:
+            mplugin.registerNode(SpaceSwitcherNode.kNodeName, SpaceSwitcherNode.kNodeId,
+                                 SpaceSwitcherNode.nodeCreator,
+                                 SpaceSwitcherNode.nodeInitializer,
+                                 OpenMayaMPx.MPxNode.kDependNode,
+                                 SpaceSwitcherNode.kNodeClassify)
+        except:
+            sys.stderr.write("Failed to register node: " + SpaceSwitcherNode.kNodeName)
+            raise
+
+    @staticmethod
+    def deregisterNode(mplugin):
+        try:
+            mplugin.deregisterNode(SpaceSwitcherNode.kNodeId)
+        except:
+            sys.stderr.write("Failed to unregister node: " + SpaceSwitcherNode.kNodeName)
+            raise
+
 
     def __init__(self):
         ''' Constructor. '''
