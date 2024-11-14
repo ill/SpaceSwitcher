@@ -10,7 +10,7 @@ from functools import partial  # optional, for passing args during signal functi
 import sys
 import pathlib
 
-class MainToolWindow(QtWidgets.QWidget):
+class SpaceSwitcherMainToolWindow(QtWidgets.QWidget):
     """
     The main entrypoint into the tool
     """
@@ -19,19 +19,19 @@ class MainToolWindow(QtWidgets.QWidget):
         # QtWidgets.QApplication(sys.argv)
         mayaMainWindowPtr = omui.MQtUtil.mainWindow()
         mayaMainWindow = wrapInstance(int(mayaMainWindowPtr), QtWidgets.QWidget)
-        MainToolWindow.window = MainToolWindow(parent=mayaMainWindow)
-        MainToolWindow.window.setWindowTitle('Space Switcher')
-        MainToolWindow.window.show()
+        window = SpaceSwitcherMainToolWindow(parent=mayaMainWindow)
+        window.setWindowTitle('Space Switcher')
+        window.show()
 
     def __init__(self, parent=None):
         """
         Initialize class.
         """
-        super(MainToolWindow, self).__init__(parent=parent)
+        super(SpaceSwitcherMainToolWindow, self).__init__(parent=parent)
         self.setWindowFlags(QtCore.Qt.Window)
         self.widgetPath = str(pathlib.Path(__file__).parent.resolve())
         print(self.widgetPath + '\\MainToolWindow.ui')  # TODO Remove
-        self.widget = QtUiTools.QUiLoader().load(self.widgetPath + '\\MainToolWindow.ui')
+        self.widget = QtUiTools.QUiLoader().load(self.widgetPath + '\\SpaceSwitcherMainToolWindow.ui')
         self.widget.setParent(self)
         # set initial window sizes
         self.resize(200, 100)
