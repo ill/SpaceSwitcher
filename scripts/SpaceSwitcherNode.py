@@ -3,7 +3,7 @@ import maya.OpenMayaMPx as OpenMayaMPx
 
 class SpaceSwitcherNode(OpenMayaMPx.MPxNode):
     kNodeName = 'SpaceSwitcher'
-    kNodeClassify = 'Utilities'
+    kNodeClassify = 'utility/general'
     kNodeId = OpenMaya.MTypeId(0x00001337)    # TODO: Register node id or whatever
 
     # Static variables which will later be replaced by the node's attributes.
