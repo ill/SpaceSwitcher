@@ -10,22 +10,28 @@ from functools import partial  # optional, for passing args during signal functi
 import sys
 import pathlib
 
-
-class MayaUITemplate(QtWidgets.QWidget):
+class MainToolWindow(QtWidgets.QWidget):
     """
-    Create a default tool window.
+    The main entrypoint into the tool
     """
-    window = None
+    @staticmethod
+    def openMainToolWindowInstance():
+        # QtWidgets.QApplication(sys.argv)
+        mayaMainWindowPtr = omui.MQtUtil.mainWindow()
+        mayaMainWindow = wrapInstance(int(mayaMainWindowPtr), QtWidgets.QWidget)
+        MainToolWindow.window = MainToolWindow(parent=mayaMainWindow)
+        MainToolWindow.window.setWindowTitle('Space Switcher')
+        MainToolWindow.window.show()
 
     def __init__(self, parent=None):
         """
         Initialize class.
         """
-        super(MayaUITemplate, self).__init__(parent=parent)
+        super(MainToolWindow, self).__init__(parent=parent)
         self.setWindowFlags(QtCore.Qt.Window)
         self.widgetPath = str(pathlib.Path(__file__).parent.resolve())
-        print(self.widgetPath + '\\toolDialog.ui')  # TODO Remove
-        self.widget = QtUiTools.QUiLoader().load(self.widgetPath + '\\toolDialog.ui')
+        print(self.widgetPath + '\\MainToolWindow.ui')  # TODO Remove
+        self.widget = QtUiTools.QUiLoader().load(self.widgetPath + '\\MainToolWindow.ui')
         self.widget.setParent(self)
         # set initial window sizes
         self.resize(200, 100)
@@ -50,26 +56,3 @@ class MayaUITemplate(QtWidgets.QWidget):
         """
         print('closing window')
         self.destroy()
-
-
-def openWindow():
-    """
-    ID Maya and attach tool window.
-    """
-    # Maya uses this so it should always return True
-    if QtWidgets.QApplication.instance():
-        # Id any current instances of tool and destroy
-        for win in (QtWidgets.QApplication.allWindows()):
-            if 'myToolWindowName' in win.objectName():  # update this name to match name below
-                win.destroy()
-
-    # QtWidgets.QApplication(sys.argv)
-    mayaMainWindowPtr = omui.MQtUtil.mainWindow()
-    mayaMainWindow = wrapInstance(int(mayaMainWindowPtr), QtWidgets.QWidget)
-    MayaUITemplate.window = MayaUITemplate(parent=mayaMainWindow)
-    MayaUITemplate.window.setObjectName('myToolWindowName')  # code above uses this to ID any existing windows
-    MayaUITemplate.window.setWindowTitle('Maya UI Template')
-    MayaUITemplate.window.show()
-
-
-openWindow()
