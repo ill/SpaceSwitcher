@@ -22,14 +22,14 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="btn_create">
      <property name="text">
       <string>Create</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="btn_wipe">
      <property name="text">
       <string>Wipe</string>
      </property>

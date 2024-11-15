@@ -8,6 +8,8 @@ class SpaceSwitcherNode(OpenMayaMPx.MPxNode):
     kNodeId = OpenMaya.MTypeId(0x00001337)    # TODO: Register node id or whatever
 
     # Static variables which will later be replaced by the node's attributes.
+    # inTestInputA = OpenMaya.MObject()
+    # inTestInputB = OpenMaya.MObject()
     inSpaceLayer = OpenMaya.MObject()
     inSpaceLayer_spaceRootTarget = OpenMaya.MObject()
     inSpaceLayer_weight = OpenMaya.MObject()
@@ -32,17 +34,21 @@ class SpaceSwitcherNode(OpenMayaMPx.MPxNode):
         # Layer Space Root Target
         SpaceSwitcherNode.inSpaceLayer_spaceRootTarget = messageAttributeFn.create("Space Root Target", "Space Root Target")
         messageAttributeFn.setReadable(False)
+        messageAttributeFn.setChannelBox(True)
         SpaceSwitcherNode.addAttribute(SpaceSwitcherNode.inSpaceLayer_spaceRootTarget)
 
         # Layer Weight
         SpaceSwitcherNode.inSpaceLayer_weight = numericAttributeFn.create("Weight", "Weight", OpenMaya.MFnNumericData.kFloat)
         numericAttributeFn.setReadable(False)
+        numericAttributeFn.setKeyable(True)
+        messageAttributeFn.setChannelBox(True)
         SpaceSwitcherNode.addAttribute(SpaceSwitcherNode.inSpaceLayer_weight)
 
         # Main Layer Parent Attribute
         SpaceSwitcherNode.inSpaceLayer = compoundAttributeFn.create("Layer", "Layer")
         compoundAttributeFn.setArray(True)
         compoundAttributeFn.setReadable(False)
+        compoundAttributeFn.setChannelBox(True)
         compoundAttributeFn.addChild(SpaceSwitcherNode.inSpaceLayer_spaceRootTarget)
         compoundAttributeFn.addChild(SpaceSwitcherNode.inSpaceLayer_weight)
         SpaceSwitcherNode.addAttribute(SpaceSwitcherNode.inSpaceLayer)
@@ -61,6 +67,7 @@ class SpaceSwitcherNode(OpenMayaMPx.MPxNode):
         # NODE ATTRIBUTE DEPENDENCIES
         # ==================================
 
+        # SpaceSwitcherNode.attributeAffects(SpaceSwitcherNode.inTestInputB, SpaceSwitcherNode.outTransformMatrix)
         SpaceSwitcherNode.attributeAffects(SpaceSwitcherNode.inSpaceLayer, SpaceSwitcherNode.outTransformMatrix)
         SpaceSwitcherNode.attributeAffects(SpaceSwitcherNode.inSpaceLayer_spaceRootTarget, SpaceSwitcherNode.outTransformMatrix)
         SpaceSwitcherNode.attributeAffects(SpaceSwitcherNode.inSpaceLayer_weight, SpaceSwitcherNode.outTransformMatrix)

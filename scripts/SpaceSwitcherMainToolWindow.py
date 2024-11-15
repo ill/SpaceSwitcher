@@ -34,8 +34,11 @@ class SpaceSwitcherMainToolWindow(QtWidgets.QWidget):
         self.widget = QtUiTools.QUiLoader().load(self.widgetPath + '\\SpaceSwitcherMainToolWindow.ui')
         self.widget.setParent(self)
         # set initial window sizes
-        self.resize(200, 100)
+        self.resize(640, 480)
         # locate UI widgets
+        self.btn_create = self.widget.findChild(QtWidgets.QPushButton, 'btn_create')
+        self.btn_create.clicked.connect(self.create)
+        self.btn_wipe = self.widget.findChild(QtWidgets.QPushButton, 'btn_wipe')
         # self.btn_close = self.widget.findChild(QtWidgets.QPushButton, 'btn_close')
         # # assign functionality to buttons
         # self.btn_close.clicked.connect(self.close)
@@ -43,6 +46,9 @@ class SpaceSwitcherMainToolWindow(QtWidgets.QWidget):
     """
     Your code goes here
     """
+
+    def create(selfself):
+        pass
 
     def resizeEvent(self, event):
         """
