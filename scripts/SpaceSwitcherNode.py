@@ -8,8 +8,10 @@ class SpaceSwitcherNode(OpenMayaMPx.MPxNode):
     kNodeId = OpenMaya.MTypeId(0x00001337)    # TODO: Register node id or whatever
 
     # Static variables which will later be replaced by the node's attributes.
-    sampleInAttribute = OpenMaya.MObject()
-    sampleOutAttribute = OpenMaya.MObject()
+    inSpaceLayer = OpenMaya.MObject()
+    inSpaceLayer_spaceRootTarget = OpenMaya.MObject()
+    inSpaceLayer_weight = OpenMaya.MObject()
+    outTransformMatrix = OpenMaya.MObject()
 
     @staticmethod
     def nodeCreator():
@@ -18,7 +20,50 @@ class SpaceSwitcherNode(OpenMayaMPx.MPxNode):
 
     @staticmethod
     def nodeInitializer():
-        pass
+        numericAttributeFn = OpenMaya.MFnNumericAttribute()
+        compoundAttributeFn = OpenMaya.MFnCompoundAttribute()
+        messageAttributeFn = OpenMaya.MFnMessageAttribute()
+        matrixAttributeFn = OpenMaya.MFnMatrixAttribute()
+
+        # ==================================
+        # INPUT NODE ATTRIBUTE(S)
+        # ==================================
+
+        # Layer Space Root Target
+        SpaceSwitcherNode.inSpaceLayer_spaceRootTarget = messageAttributeFn.create("Space Root Target", "Space Root Target")
+        messageAttributeFn.setReadable(False)
+        SpaceSwitcherNode.addAttribute(SpaceSwitcherNode.inSpaceLayer_spaceRootTarget)
+
+        # Layer Weight
+        SpaceSwitcherNode.inSpaceLayer_weight = numericAttributeFn.create("Weight", "Weight", OpenMaya.MFnNumericData.kFloat)
+        numericAttributeFn.setReadable(False)
+        SpaceSwitcherNode.addAttribute(SpaceSwitcherNode.inSpaceLayer_weight)
+
+        # Main Layer Parent Attribute
+        SpaceSwitcherNode.inSpaceLayer = compoundAttributeFn.create("Layer", "Layer")
+        compoundAttributeFn.setArray(True)
+        compoundAttributeFn.setReadable(False)
+        compoundAttributeFn.addChild(SpaceSwitcherNode.inSpaceLayer_spaceRootTarget)
+        compoundAttributeFn.addChild(SpaceSwitcherNode.inSpaceLayer_weight)
+        SpaceSwitcherNode.addAttribute(SpaceSwitcherNode.inSpaceLayer)
+
+        # ==================================
+        # OUTPUT NODE ATTRIBUTE(S)
+        # ==================================
+
+        # Transform Matrix
+        SpaceSwitcherNode.outTransformMatrix = matrixAttributeFn.create("Transform Matrix", "Transform Matrix")
+        matrixAttributeFn.setStorable(False)
+        matrixAttributeFn.setWritable(False)
+        SpaceSwitcherNode.addAttribute(SpaceSwitcherNode.outTransformMatrix)
+
+        # ==================================
+        # NODE ATTRIBUTE DEPENDENCIES
+        # ==================================
+
+        SpaceSwitcherNode.attributeAffects(SpaceSwitcherNode.inSpaceLayer, SpaceSwitcherNode.outTransformMatrix)
+        SpaceSwitcherNode.attributeAffects(SpaceSwitcherNode.inSpaceLayer_spaceRootTarget, SpaceSwitcherNode.outTransformMatrix)
+        SpaceSwitcherNode.attributeAffects(SpaceSwitcherNode.inSpaceLayer_weight, SpaceSwitcherNode.outTransformMatrix)
 
     @staticmethod
     def registerNode(mplugin):
@@ -46,4 +91,9 @@ class SpaceSwitcherNode(OpenMayaMPx.MPxNode):
         OpenMayaMPx.MPxNode.__init__(self)
 
     def compute(self, pPlug, pDataBlock):
-        pass
+        if (pPlug == SpaceSwitcherNode.outTransformMatrix):
+            outTransformMatrixDataHandle = pDataBlock.outputValue(SpaceSwitcherNode.outTransformMatrix)
+
+            outTransformMatrixDataHandle.setClean()
+        else:
+            return OpenMaya.kUnknownParameter
