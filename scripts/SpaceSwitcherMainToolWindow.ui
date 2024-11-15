@@ -22,6 +22,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="btn_refreshSelection">
+     <property name="text">
+      <string>Refresh Selection</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="btn_create">
      <property name="text">
       <string>Create</string>

@@ -3,16 +3,32 @@ import maya.OpenMaya as OpenMaya
 import maya.OpenMayaMPx as OpenMayaMPx
 
 class SpaceSwitcherNode(OpenMayaMPx.MPxNode):
-    kNodeName = 'SpaceSwitcher'
-    kNodeClassify = 'utility/general'
+    kNodeName = "SpaceSwitcher"
+    kNodeClassify = ""#"utility/general"
     kNodeId = OpenMaya.MTypeId(0x00001337)    # TODO: Register node id or whatever
 
-    # Static variables which will later be replaced by the node's attributes.
-    # inTestInputA = OpenMaya.MObject()
-    # inTestInputB = OpenMaya.MObject()
+    """
+    The offset in case the target object wasn't zeroed out at the time this was created, so we can feed it a transform relative to this
+    """
+    inOffsetMatrix = OpenMaya.MObject()
+
+    """
+    Array of layers
+    """
     inSpaceLayer = OpenMaya.MObject()
+
+    """
+    The space root target object, in whose space we're in
+    """
     inSpaceLayer_spaceRootTarget = OpenMaya.MObject()
+    """
+    The weight of the layer
+    """
     inSpaceLayer_weight = OpenMaya.MObject()
+
+    """
+    The transform matrix of the target object in local space. This should get fed into the Offset Parent Matrix or decomposed into the TRS
+    """
     outTransformMatrix = OpenMaya.MObject()
 
     @staticmethod
